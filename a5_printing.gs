@@ -15,7 +15,7 @@ function printA5Envelope() {
   var emptyTemplateid = "1oOOj2FlaqquncZ-3h8dL-SPwWR1X-h1uv2V5RNrLiX0"; // empty file with correct borders
   var outFolder = DriveApp.getFolderById("1MCVahL7ix9NKqwWEvQSSni9uzdaIJ8TV");
   var newMailingFile = DriveApp.getFileById(emptyTemplateid);
-  var newMailingDocId = newMailingFile.makeCopy("Mailing_2018-03-18", outFolder).getId();
+  var newMailingDocId = newMailingFile.makeCopy("Mailing_" + formatDate(Date.now()), outFolder).getId();
   var newMailingDoc = DocumentApp.openById(newMailingDocId);
   
   var ss = SpreadsheetApp.getActiveSpreadsheet();
@@ -58,4 +58,16 @@ function appendToDoc(fromBody, toDoc) {
     else
       throw new Error("According to the doc this type couldn't appear in the body: "+type);
   }
+}
+
+function formatDate(date) {
+    var d = new Date(date),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
+
+    if (month.length < 2) month = '0' + month;
+    if (day.length < 2) day = '0' + day;
+
+    return [year, month, day].join('-');
 }
