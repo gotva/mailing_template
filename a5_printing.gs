@@ -24,6 +24,7 @@ function printEnvelope(templateid, emptyTemplateid) {
   
   var ss = SpreadsheetApp.getActiveSpreadsheet();
   var sheet = ss.getActiveSheet();
+  var headers = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0];
   var data = sheet.getRange(2, 1, sheet.getLastRow()-1, sheet.getLastColumn()).getValues();
   
   for (var i in data){
@@ -32,8 +33,12 @@ function printEnvelope(templateid, emptyTemplateid) {
     
     replacedBody.replaceText('%sender_name%', SENDER_NAME)
     replacedBody.replaceText('%sender_address%', SENDER_ADDRESS)
-    replacedBody.replaceText("%recepient_name%", row[0]);
-    replacedBody.replaceText("%recepient_address%", row[1]);
+    for (var j in headers) {
+      replacedBody.replaceText(["%", headers[j], "%"].join(''), row[j]);
+    }
+    
+//    replacedBody.replaceText("%recepient_name%", row[0]);
+//    replacedBody.replaceText("%recepient_address%", row[1]);
     
     appendToDoc(replacedBody, newMailingDoc)
     newMailingDoc.getBody().appendPageBreak();
@@ -42,8 +47,7 @@ function printEnvelope(templateid, emptyTemplateid) {
   newMailingDoc.getBody().removeChild(newMailingDoc.getBody().getChild(0)); // remove the first empty line
   
   templateDoc.saveAndClose();
-  newMailingDoc.saveAndClose();
- 
+  newMailingDoc.saveAndClose(); 
 }
 
 function appendToDoc(fromBody, toDoc) {
