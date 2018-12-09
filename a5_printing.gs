@@ -1,18 +1,22 @@
 function onOpen() {
-  var menuEntries = [ {name: "A5 Envelope", functionName: "printA5Envelope"}];
+  var menuEntries = [ 
+    {name: "A5 Envelope", functionName: "printA5Envelope"}
+  ];
   var ss = SpreadsheetApp.getActiveSpreadsheet();
   ss.addMenu("Print", menuEntries);
 }
 
 function printA5Envelope() {
+  printEnvelope("1DQk7G-eNgRMz2PU-Wo5hpkv3qtURjS8Zss6GmkH72l8", "1oOOj2FlaqquncZ-3h8dL-SPwWR1X-h1uv2V5RNrLiX0")
+}
+
+function printEnvelope(templateid, emptyTemplateid) {
   var SENDER_NAME = 'Vasily';
   var SENDER_ADDRESS = 'My Home, Sweet Home';
   
-  var templateid = "1DQk7G-eNgRMz2PU-Wo5hpkv3qtURjS8Zss6GmkH72l8"; // text with %str%
   var templateDoc = DocumentApp.openById(templateid);
   var templateDocBody = templateDoc.getBody();
   
-  var emptyTemplateid = "1oOOj2FlaqquncZ-3h8dL-SPwWR1X-h1uv2V5RNrLiX0"; // empty file with correct borders
   var outFolder = DriveApp.getFolderById("1MCVahL7ix9NKqwWEvQSSni9uzdaIJ8TV");
   var newMailingFile = DriveApp.getFileById(emptyTemplateid);
   var newMailingDocId = newMailingFile.makeCopy("Mailing_" + formatDate(Date.now()), outFolder).getId();
